@@ -79,34 +79,53 @@ LIKE 연산자를 사용하여 패턴 일치
 */
 SELECT first_name
 FROM employees
-WHERE first_name LIKE '%A%';
+WHERE first_name LIKE 'A%';
 
+-- 대체 문자 결합
+SELECT last_name
+FROM employees
+WHERE last_name LIKE '_o%';
 
+-- ESCAPE 식별자
+SELECT employee_id, last_name, job_id
+FROM employees
+WHERE job_id LIKE '%SA\_%' ESCAPE '\';
 
+/*
+NULL 조건 사용
+    IS NULL 연산자로 NULL을 테스트 합니다.
+*/
+SELECT last_name, manager_id
+FROM employees
+WHERE manager_id IS NULL;
 
+/*
+논리 연산자를 사용하여 조건정의
+    AND : 구성 요소 조건이 모두 참인 경우 TRUE 반환
+    OR  : 구성 요소 조건 중 하나가 참인 경우 TRUE 반환
+    NOT : 조건이 거짓인 경우 TRUE를 반환
+*/
 
+-- AND 연산자 사용
+SELECT employee_id, last_name, job_id, salary
+FROM employees
+WHERE salary >= 10000
+AND job_id LIKE '%MAN%';
 
+-- OR 연산자 사용
+SELECT employee_id, last_name, job_id, salary
+FROM employees
+WHERE salary >= 10000
+OR job_id LIKE '%MAN%';
 
+-- NOT 연산자 사용
+SELECT last_name, job_id
+FROM employees
+WHERE job_id NOT IN ('IT_PROG', 'ST_CLERK', 'SA_REP');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+SELECT last_name, manager_id
+FROM employees
+WHERE manager_id IS NOT NULL;
 
 
 
