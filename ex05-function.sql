@@ -120,9 +120,147 @@ TO_CHAR() 함수 - 날짜 또는 숫자를 문자열로 변환
     FF - 밀리세컨드(0-999)를 반환합니다.
     AM 또는 PM - 오전/오후를 나타내는 자오선 표시 반환합니다.
     A.M 또는 P.M - 오전/오후를 나타내는 마침표가 있는 자오선 표시를 반환합니다.
-
-
+    
+    YY - 2000년대 이후 표시
+    RR - 49년 까지는 2000년대로 50년이후는 1900년대로 표시를 반환합니다.
 */
+SELECT last_name, TO_CHAR(hire_date, 'YY/MM/DD HH24:MI:SS') AS HIREDATE
+FROM employees;
+
+-- TIMESTAMP - 날짜 정보 + 밀리세컨드
+SELECT TO_CHAR(SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI:SS.FF2') FROM dual;
+
+/*
+TO_CHAR() 함수를 숫자에 사용할 때 
+    9 - 숫자로 나타냅니다.
+    0 - 0이 표시되도록 강제로 적용합니다.
+    $ - 부동 달러 기호를 배치합니다.
+    L - 부동 로컬 통화 기호를 사용합니다. 
+    . - 소수점을 출력합니다.
+    , - 천단위 표시자로 쉼표를 출력합니다.
+*/
+SELECT TO_CHAR(salary, 'L99,999.00') SALARY
+FROM employees
+WHERE last_name = 'Ernst';
+
+-- TO_DATE() 함수 - 문자열을 DATE 타입으로 반환합니다.
+SELECT last_name, TO_CHAR(hire_date, 'YYYY-MM-DD') AS HIREDATE
+FROM employees
+WHERE hire_date < TO_DATE('2005-01-01', 'YYYY-MM-DD')
+ORDER BY hire_date
+;
+
+/*
+함수 중첩
+    단일 행 함수는 어떠한 레벨로도 중첩될 수 있습니다.
+    중첩된 함수는 가장 깊은 레벨에서 가장 낮은 레벨로 평가됩니다.
+*/
+SELECT last_name, UPPER(CONCAT(SUBSTR(last_name, 1, 8), '_US'))
+FROM employees
+WHERE department_id = 60;
+
+-- **** NVL() 함수 - null 값을 실제 지정한 값으로 반환합니다.
+--                  (null이 연산이 안될 때 사용)                    
+SELECT NVL(null, 0) + 1 FROM dual;
+SELECT last_name, salary, NVL(commission_pct, 0), (salary * 12) AS Y_SAL,
+    (salary * 12) + (salary * 12 * NVL(commission_pct, 0)) AS AN_SAL
+FROM employees;
+
+-- NVL2() 함수
+-- 첫 번째 표현식을 검사합니다. 첫 번째 표현식이 null이 아니면 두번째 표현식을 반환합니다.
+-- 첫 번째 표현식이 null 이면 세 번째 표현식이 반환됩니다.
+SELECT last_name, salary, commission_pct, 
+    NVL2(commission_pct, 'SAL+COMM', 'SAL') AS income
+FROM employees
+WHERE department_id IN (50, 80);
+
+-- NULLIF()함수
+-- 두 표현식을 비교하고 같으면 null을 반환하고 다르면 expr1을 반환합니다.
+-- 그러나 expr1에 대한 리터럴 NULL을 지정할 수 없습니다.
+SELECT first_name, LENGTH(first_name) AS expr1,
+        last_name, LENGTH(last_name) AS expr2,
+        NULLIF(LENGTH(first_name), LENGTH(last_name)) AS result
+FROM employees;
+
+-- COALESCE() 함수
+-- 리스트에서 null이 아닌 첫 번째 표현식을 반환합니다.
+SELECT last_name, employee_id, commission_pct, manager_id,
+    COALESCE(TO_CHAR(commission_pct), TO_CHAR(manager_id),
+    'No commission and no manager')
+FROM employees;
+
+-- 조건부 표현식
+/*
+***** CASE 식
+    IF-THEN-ELSE 문 작업을 수행하여 조건부 조회를 편리하게 수행하도록 합니다.
+*/
+SELECT last_name, job_id, salary,
+        CASE job_id
+            WHEN 'IT_PROG' THEN 1.10 * salary
+            WHEN 'ST_CLERK' THEN 1.15 * salary
+            WHEN 'SA_REP' THEN 1.20 * salary
+            ELSE salary
+        END AS REVISED_SALARY
+FROM employees;
+
+-- ***** DECODE() 함수
+-- CASE 식과 유사한 작업을 수행합니다.
+SELECT last_name, job_id, salary,
+        DECODE(job_id, 'IT_PROG', 1.10 * salary,'ST_CLERK', 1.15 * salary,'SA_REP', 1.20 * salary, salary) AS REVISED_SALARY
+FROM employees;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
