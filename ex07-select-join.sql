@@ -43,13 +43,34 @@ WHERE e.department_id = d.department_id
 ;
 
 -- ON 절 사용하여 3-Way 조인
-SELECT e.employee_id, e.last_name, e.first_name, 
+SELECT e.employee_id, e.last_name, e.first_name, e.department_id,
     d.department_name, l.city
 FROM employees e 
 JOIN departments d
 ON e.department_id = d.department_id
 JOIN locations l
-ON d.location_id = l.location_id;
+ON d.location_id = l.location_id
+;
+
+
+SELECT a.employee_id FROM employees a;
+
+
+SELECT e.employee_id, e.last_name, e.first_name, 
+    d.department_name, d.location_id, l.city
+FROM employees e 
+JOIN departments d
+ON e.department_id = d.department_id
+JOIN locations l
+ON d.location_id = l.location_id
+;
+
+
+SELECT * FROM departments;
+
+SELECT * FROM locations;
+
+
 
 
 
