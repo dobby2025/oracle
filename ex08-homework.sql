@@ -1,0 +1,4 @@
+-- 1. 각 직원의 성(last_name)과 해당 직원의 매니저인 직원의 성(last_name) 조회하기
+-- 2. 각 직원의 성(last_name)과 해당 직원의 부서 이름(department_name) 조회하기
+-- 3. 각 부서의 이름(department_name)과 해당 부서의 평균 급여(avg_salary) 조회하기
+-- 4. 각 부서의 이름(department_name)과 해당 부서의 최대 급여(max_salary) 조회하기
