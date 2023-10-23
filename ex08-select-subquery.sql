@@ -115,7 +115,7 @@ SELECT e.employee_id
         WHERE d.department_id = e.department_id) AS department_name
 FROM employees e
 ;
-
+commit;
         
 
 
