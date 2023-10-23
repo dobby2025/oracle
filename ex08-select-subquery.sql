@@ -5,7 +5,7 @@ Subquery 구문
     SELECT 문의 포함되는 SELECT 문 입니다.
 */
 
--- 단일 행 Subquery 
+-- 단일 행 Subquery  - 스칼라(Scalar Subquery) 서브쿼리
 SELECT last_name, salary
 FROM employees
 WHERE salary > (SELECT salary FROM employees WHERE last_name = 'Abel');
@@ -16,7 +16,7 @@ FROM employees
 WHERE salary = (SELECT MIN(salary) FROM employees);
 
 /*
-여러 행 Subquery
+여러 행 Subquery - RowSubquery 또는 TableSubquery
     IN 
         리스트의 임의  멤버와 같음
     ANY
@@ -53,6 +53,7 @@ EXISTS 연산자
     subquery에서 최소한 한 개의 행을 반환하면 TRUE로 평가됩니다.
 */
 
+-- 상관서브쿼리(CorrelatedSubquery)
 SELECT * FROM departments
 WHERE NOT EXISTS 
         (SELECT * FROM employees
@@ -88,6 +89,40 @@ AND emp.employee_id <> 100
 AND emp.employee_id <> 102
 AND emp.employee_id <> 103
 ;
+
+
+
+/*
+인라인 뷰 서브쿼리(Inline View Subquery)
+    서브쿼리를 임시 테이블뷰로 사용하는 서브쿼리
+*/
+SELECT e.employee_id, e.last_name, d.department_name, d.department_id
+FROM employees e 
+JOIN (SELECT 
+            department_id, department_name 
+        FROM departments
+       WHERE department_id < 50
+    ) d
+ON e.department_id = d.department_id
+;
+
+-- 스칼라 상관서브쿼리
+SELECT e.employee_id 
+     ,e.last_name 
+     ,e.department_id
+     ,(SELECT d.department_name 
+        FROM departments d 
+        WHERE d.department_id = e.department_id) AS department_name
+FROM employees e
+;
+
+        
+
+
+
+
+
+
 
 
 
