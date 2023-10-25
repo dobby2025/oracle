@@ -27,6 +27,35 @@ CONNECT BY
 ORDER SIBLINGS BY e.employee_id
 ;
 
+-- NOCYCLE 사이클을 허용하지 않도록 설정(무한루프방지)
+SELECT 
+    e.employee_id,
+    e.last_name,
+    e.manager_id,
+    LEVEL AS depth,
+    LPAD(' ', LEVEL*2-2) || SYS_CONNECT_BY_PATH(e.last_name, '/') AS hierarchy_path
+FROM employees e
+START WITH 
+    e.manager_id = 100
+CONNECT BY 
+    NOCYCLE PRIOR e.employee_id = e.manager_id
+ORDER SIBLINGS BY e.employee_id
+;
+
+SELECT employee_id, last_name, manager_id FROM employees 
+WHERE employee_id = 100;
+
+UPDATE employees SET
+manager_id = null
+WHERE employee_id = 100
+;
+COMMIT;
+    
+
+    
+    
+    
+
     
 
 
