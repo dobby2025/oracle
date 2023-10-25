@@ -53,9 +53,24 @@ SELECT id, name, manager_id, depth
 FROM RecursiveCTE;
 
 
-SELECT e.employee_id, e.last_name, e.manager_id, 2 + 1
+SELECT e.employee_id, e.last_name, e.manager_id, 3 + 1
 FROM employees e
-WHERE e.manager_id = 102;
+WHERE e.manager_id = 103
+
+
+
+
+
+
+
+
+;
+
+
+
+;
+
+
 
 
 
