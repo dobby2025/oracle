@@ -70,6 +70,28 @@ FROM dual
 
 
 
+SELECT location_id, department_name, ''
+FROM departments
+UNION
+SELECT location_id, '', state_province
+FROM locations;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
