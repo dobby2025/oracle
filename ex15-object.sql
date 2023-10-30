@@ -127,18 +127,90 @@ UPDATE high_salary_employee_vu SET
 salary = 2400
 WHERE employee_id = 100;
 
+UPDATE high_salary_employee_vu SET
+salary = 26000
+WHERE employee_id = 100;
+
+ROLLBACK;
+
+-- 뷰 제거
+DROP VIEW high_salary_employee_vu;
 
 
+/*
+시퀀스(Sequence)
+    연속적인 숫자 값을 자동으로 증감 시켜서 값을 리턴하는 객체입니다.
+*/
 
+CREATE SEQUENCE my_seq
+        INCREMENT BY 1          -- 증가값 (1씩증가)
+        START WITH 1            -- 시작값
+        MINVALUE 1              -- 최소값
+        MAXVALUE 99999999       -- 최대값
+        NOCYCLE                 -- 최대값 도달시 시작부터 반복안함
+        CACHE 20                -- 미리 번호를 메모리에 생성
+        ORDER;                  -- 요청 순서대로 값을 생성(순서보장)
+        
+SELECT my_seq.NEXTVAL FROM dual;
 
+-- 현재 시퀀스 값 확인
+SELECT my_seq.CURRVAL FROM dual;
 
+CREATE TABLE test_table (
+    no NUMBER(11) PRIMARY KEY,
+    subject VARCHAR2(255),
+    contents CLOB
+);
 
+SELECT * FROM test_table;
+INSERT INTO test_table (no, subject, contents)
+VALUES (my_seq.NEXTVAL, '안녕하세요', '시퀀스 테스트중입니다.');
 
+-- 시퀀스 삭제
+DROP SEQUENCE my_seq;
+
+/*
+인덱스(INDEX)
+    데이터베이스에서 데이터를 빠르게 검색하기 위해 특정 열(또는 열의 조합)을
+    정렬하여 저장하는 구조로, 데이터 조회 성능을 향상 시키는데 사용됩니다.
     
-    
+    PK - 테이블 생성시 자동으로 인덱스 생성이 됩니다.
+*/
+
+SELECT * FROM employees
+WHERE last_name = 'King';
+
+-- EMPLOYEES 테이블의 LAST_NAME 열에 대한 인덱스 생성
+CREATE INDEX emp_last_name_idx
+    ON employees(last_name);
+
+-- 인덱스 제거
+DROP INDEX emp_last_name_idx;
+
+/*
+동의어(SYNONYM)
+    동의어를 생성하여 객체에 대체 이름을 부여할 수 있습니다.
+*/
+
+SELECT * FROM dept_sum_vu;
 
 
+-- 동의어 생성
+CREATE SYNONYM d_sum
+FOR dept_sum_vu;
 
+SELECT * FROM d_sum;
+
+-- 동의어 제거
+DROP SYNONYM d_sum;
+
+/*
+ROWID   : ROW 고유의 아이디
+        데이터베이스 내부에서 행의 물리적 위치를 나타냅니다.
+ROWNUM  : 쿼리의 결과의 각 행에 순차적인 번호를 할당해줍니다.
+*/
+SELECT ROWNUM, ROWID, employee_id, last_name, salary
+FROM employees;
 
 
 
