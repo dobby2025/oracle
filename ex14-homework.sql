@@ -14,10 +14,6 @@ ON e.employee_id = j.employee_id
 AND e.job_id = j.job_id
 ;
 
-
-
-
-
 -- 1. 각 직원의 성(last_name)과 해당 직원의 매니저의 성(last_name) 
 --  및 부서 이름(department_name) 조회하기
 SELECT e.last_name, m.last_name, d.department_name
