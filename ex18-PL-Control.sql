@@ -105,10 +105,39 @@ BEGIN
                     WHEN 'C' THEN 'GOOD'
                     ELSE 'No such grad'
                  END;
-    DBMS_OUTPUT.PUT_LINE('Grade : '|| v_grad);
+    DBMS_OUTPUT.PUT_LINE('Grade : '|| v_grade);
     DBMS_OUTPUT.PUT_LINE('Appraisal : '|| v_appraisal);
 END;
 /
+
+CREATE OR REPLACE PROCEDURE update_salaries(p_percentage IN NUMBER) 
+IS 
+    BEGIN
+        FOR emp_rec IN ( SELECT employee_id, salary FROM employees) LOOP
+            IF emp_rec.salary > 5000 THEN
+                UPDATE employees 
+                SET
+                    salary = salary + (salary * (p_percentage / 100))
+                WHERE employee_id = emp_rec.employee_id;
+            END IF;
+        END LOOP;
+        COMMIT;
+    END;
+/
+
+
+
+SELECT employee_id, salary FROM employees
+WHERE salary > 5000;
+
+UPDATE employees SET
+salary  = salary * 1.1
+WHERe salary > 5000;
+
+EXEC update_salaries(10);
+            
+
+
 
 
 
