@@ -25,9 +25,6 @@ SET SERVEROUTPUT ON;
 -- 스크립트 경과 시간을 출력하도록 설정
 SET TIMING ON;
 
-
-
-
 DECLARE     -- 변수 정의
     V_STRD_DT       VARCHAR2(8);
     V_STRD_DEPTNO   NUMBER;
@@ -43,7 +40,7 @@ BEGIN       -- 로직 시작
          , T1.department_name
          , T1.location_id
       INTO V_DEPTNO
-         , V_DNAME
+         , V_STRD_DEPTNO
          , V_LOC
     FROM departments T1
     WHERE T1.department_id = V_STRD_DEPTNO;
@@ -62,6 +59,98 @@ END;
 /
 -- 작업종료
  
+/*
+프로시저
+[기본구조]
+CREATE OR REPLACE PROCEDURE 프로시저이름 (매개변수1, 매개변수2...)
+    IS[AS]
+        [선언부]
+    BEGIN
+        [실행부]
+    [EXCEPTION]
+        [EXCEPTION 처리]
+    END;
+    /
+
+*/
+
+CREATE OR REPLACE PROCEDURE print_hello_proc    -- 매개변수 없으면 () 생략가능
+    IS  -- 프로시저 선언부 
+        msg VARCHAR2(20) := 'hello world';  -- 변수 초기값 선언
+    BEGIN   -- 프로시저 실행문 작성
+        DBMS_OUTPUT.PUT_LINE(msg);
+    END;
+/
+
+EXEC print_hello_proc;
+
+/*
+IN 매개변수
+    값이 프로시저 안으로 들어감
+*/
+CREATE TABLE emp2 AS
+SELECT employee_id empno, last_name name, salary, department_id deptno
+FROM employees;
+
+SELECT * FROM emp2;
+
+CREATE OR REPLACE PROCEDURE update_emp_salary_proc(eno IN NUMBER)
+    IS
+    BEGIN
+        UPDATE emp2 SET
+        salary = salary * 1.1
+        WHERE empno = eno;
+        
+        COMMIT;
+    END;
+/
+-- 3100 -> 3410 -> 3751
+SELECT * FROM emp2
+WHERE empno = 115;
+
+EXEC update_emp_salary_proc(115);
+
+
+/*
+OUT 매개변수
+    프로시저의 반환값이 없으므로 OUT 매개변수로 값을 받을 수 있다.    
+*/
+CREATE OR REPLACE PROCEDURE find_emp_proc(v_eno IN NUMBER,
+    v_fname OUT NVARCHAR2, v_lname OUT NVARCHAR2, v_sal OUT NUMBER)
+    IS
+    BEGIN
+        SELECT first_name, last_name, salary
+        INTO v_fname, v_lname, v_sal
+        FROM employees WHERE employee_id = v_eno;
+    END;
+/
+
+VARIABLE v_fname NVARCHAR2(25);
+VARIABLE v_lname NVARCHAR2(25);
+VARIABLE v_sal NUMBER;
+
+EXECUTE find_emp_proc(115, :v_fname, :v_lname, :v_sal);
+PRINT v_fname;
+PRINT v_lname;
+PRINT v_sal;
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
     
     
     
