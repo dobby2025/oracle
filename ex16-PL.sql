@@ -134,8 +134,38 @@ PRINT v_fname;
 PRINT v_lname;
 PRINT v_sal;
 
-        
-        
+/*
+IN OUT 매개변수
+    IN OUT 동시에 사용할 수 있는 매개변수
+*/
+CREATE OR REPLACE PROCEDURE find_sal(v_io IN OUT NUMBER)
+IS
+    BEGIN
+        SELECT salary
+        INTO v_io
+        FROM employees WHERE employee_id = v_io;
+    END;
+/
+
+VAR v_io NUMBER;
+EXEC :v_io := 115;
+PRINT v_io;
+EXEC find_sal(:v_io);
+PRINT v_io;
+
+
+DECLARE
+    v_io NUMBER := 115;
+    BEGIN
+        DBMS_OUTPUT.PUT_LINE('eno='||v_io);
+        find_sal(v_io);
+        DBMS_OUTPUT.PUT_LINE('salary='||v_io);
+    END;
+/
+
+    
+
+
 
 
 
