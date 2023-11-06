@@ -158,7 +158,6 @@ AND birthdate BETWEEN TO_DATE('19850101', 'YYYYMMDD') AND TO_DATE('19851231', 'Y
 
 SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY_CURSOR(NULL, NULL, 'ALLSTATS LAST'));
 
-+-----------------
 SELECT /*+ INDEX_SS(c customers_idx) */ custno, city, grade, birthdate, phone
 FROM customers c
 WHERE city = '¼­¿ï'
