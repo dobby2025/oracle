@@ -102,9 +102,6 @@ FROM v$sqlarea
 WHERE buffer_gets > 10000;
 
 
-
-
-
 SELECT
   a.sid,       -- SID
   a.serial#,   -- 시리얼번호
@@ -123,6 +120,13 @@ WHERE
   AND a.sql_address=b.address
   AND a.paddr=c.addr
   AND a.status='ACTIVE';
+  
+-- 유저 세션 KILL
+ALTER SYSTEM KILL SESSION 'SID,시리얼번호';
+
+
+
+  
 
 
 
